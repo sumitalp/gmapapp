@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map_canvas {
+        height: 50%;
+      }
+        img#mapImg {
+            //display: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD15fyyrDh9M_UfriiceoLl-ClAJoVlgls&callback=initialize" async defer>
+
+    </script>
+    <script type="text/javascript">
+      key = 'AIzaSyD15fyyrDh9M_UfriiceoLl-ClAJoVlgls';
+      var map;
+      function initialize() {
+          //var myLatlng = new google.maps.LatLng(47.3537106195136,8.5693359375);
+          // var myLatlng = new google.maps.LatLng(46.502173483540716, 8.103103637695312);
+          var myLatlng = new google.maps.LatLng(0,0);
+          var myOptions = {
+          zoom: 10,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+
+        map = new google.maps.Map(document.getElementById('map_canvas'),
+            myOptions);
+
+        map.set('styles', [
+            /*{
+                "featureType": "landscape.natural.landcover",
+                "stylers": [
+                  { "color": "#ff0000" },
+                  { "visibility": "on" }
+                ]
+            },*/ {
+              featureType: 'poi',
+              elementType: 'geometry',
+              stylers: [
+                { 'visibility': 'on' }
+              ]
+            }
+        ]);
+
+        /*
+        map.set('styles', [
+          {
+          featureType: 'poi',
+          elementType: 'geometry',
+          stylers: [
+            { visibility: 'off' }
+          ]
+        }, {
+          featureType: 'water',
+          elementType: 'geometry',
+          stylers: [
+            { visibility: 'off' }
+          ]
+        }, {
+          featureType: 'poi.school',
+          elementType: 'geometry',
+          stylers: [
+            { visibility: 'on' },
+            { hue: '#fff700' },
+            { lightness: -15 },
+            { saturation: 99 }
+          ]
+        }
+        ]);*/
+
+        // marker STARTS
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            title:"Click to view info!"
+        });
+        marker.setMap(map);
+        // marker ENDS
+
+        // info-window STARTS
+        var infowindow = new google.maps.InfoWindow({ content: "" });
+        google.maps.event.addListener(map, 'click', function(e) {
+            myLatlng = new google.maps.LatLng(e.latLng.lat(),e.latLng.lng());
+            marker = new google.maps.Marker({
+                position: myLatlng,
+                title:"Click to view info!"
+            });
+            marker.setMap(map);
+            //infowindow.open(map,marker);
+            console.log(google.maps);
+
+            // Get Address
+            geocoder = new google.maps.Geocoder();
+            geocoder.geocode({'latLng': myLatlng}, function(results, status){
+                if (status === google.maps.GeocoderStatus.OK) {
+                  if (results[1]) {
+                    var address = results[1].formatted_address;
+                    console.log(results[1]);
+                    infowindow = new google.maps.InfoWindow({content:address});
+                    infowindow.open(map,marker);
+                    console.log("***Geocoder***");
+                    console.log(is_water(e.latLng.lat(), e.latLng.lng()));
+                  } else {
+                    console.log('No results found');
+                  }
+                } else {
+                  console.log('Geocoder failed due to: ' + status);
+                }
+            });
+            console.log(e.latLng.lat(), e.latLng.lng());
+        });
+        // info-window ENDS
+
+     }
+
+    function httpGet(theUrl)
+    {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+    }
+      //google.maps.event.addDomListener(window, 'load', initialize);
+
+    function is_water(xGps, yGps){
+        var img = document.getElementById('mapImg');
+
+        // Bypass the security issue : drawing a canvas from an external URL.
+        img.crossOrigin='http://maps.googleapis.com/crossdomain.xml';
+
+        //var mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" + xGps + "," + yGps +
+            "&zoom=14&size=20x20&maptype=roadmap&sensor=false";
+
+        var mapUrl = "http://maps.googleapis.com/maps/api/staticmap?scale=2&center=" + xGps + "," + yGps +
+        "&zoom=13&size=20x20&sensor=false&visual_refresh=true&style=element:labels|visibility:off&style=feature:water|color:0x00FF00&style=feature:transit|visibility:off&style=feature:poi|visibility:off&style=feature:road|visibility:off&style=feature:administrative|visibility:off";
+
+        // mapUrl += "&key=" + key;
+
+        $(img).attr('src',mapUrl);
+
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+
+        var pixelData = canvas.getContext('2d').getImageData(1, 1, 1, 1).data;
+        console.log(canvas.getContext('2d').getImageData(1, 1, 1, 1));
+        /*
+        if (pixelData[0] == 164 &&
+            pixelData[1] == 190 &&
+            pixelData[2] == 220) {
+            return true;
+        } else {
+            return false;
+        }
+        */
+        if (pixelData[0] == 0 &&
+            pixelData[1] == 255 &&
+            pixelData[2] == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+</head>
+<body>
+    <img id="mapImg" src="" />
+    <div id="map_canvas"></div>
+
+</body>
+</html>

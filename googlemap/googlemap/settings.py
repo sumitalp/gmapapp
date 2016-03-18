@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'map_with_fusion_table',
 ]
 
 MIDDLEWARE_CLASSES = [

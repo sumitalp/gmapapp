@@ -1,3 +1,8 @@
 from django.db import models
 
-# Create your models here.
+
+class Unit(models.Model):
+    lat = models.FloatField()
+    lng = models.FloatField()
+    address = models.CharField(max_length=255)
+    created = models.DateTimeField(auto_now_add=True)

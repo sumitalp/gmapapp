@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.http import HttpResponse
 from django.template import loader
+from .forms import UnitForm
 
 
 def index(request):
@@ -10,4 +11,9 @@ def index(request):
     # context = {
     #     'latest_question_list': latest_question_list,
     # }
+    if request.method == "POST":
+        form = UnitForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
     return HttpResponse(template.render(request))

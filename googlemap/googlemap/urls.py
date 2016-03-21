@@ -18,5 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^map/', include('map_with_fusion_table.urls')),
+    url(r'^map/', include('map_with_fusion_table.urls', namespace='maps')),
 ]

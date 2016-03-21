@@ -26,6 +26,10 @@
     <script type="text/javascript">
       key = 'AIzaSyD15fyyrDh9M_UfriiceoLl-ClAJoVlgls';
       var map;
+      // Globals same for all requests
+        var queryUrlHead = 'https://fusiontables.googleusercontent.com/fusiontables/api/query?sql=';
+        var queryUrlTail = '&jsonCallback=example_dataHandler'; // ? could be a function name
+
       function initialize() {
           //var myLatlng = new google.maps.LatLng(47.3537106195136,8.5693359375);
           // var myLatlng = new google.maps.LatLng(46.502173483540716, 8.103103637695312);
@@ -102,6 +106,20 @@
             //infowindow.open(map,marker);
             console.log(google.maps);
 
+            $.ajax({
+                type: "POST",
+                url:  "{% url 'maps:index' %}",
+                //dataType: "jsonp",  // return CSV FustionTable response as JSON
+                data: {lat:e.latLng.lat(), lng: e.latLng.lng()},
+                success: function(response){
+                    console.log(response);
+                },
+                error: function (xhr,status,error) {
+                    console.log(status);
+                //alert("AJAX ERROR for " + queryurl );
+                }
+            });
+
             // Get Address
             geocoder = new google.maps.Geocoder();
             geocoder.geocode({'latLng': myLatlng}, function(results, status){
@@ -175,12 +193,61 @@
             return false;
         }
     }
+
+    function getFTData(table_id, col_list, successFunction) {
+
+        var query = "SELECT " + col_list + " FROM " + table_id;
+
+        var queryurl = encodeURI(queryUrlHead + query + queryUrlTail);
+
+        $.ajax({
+            type: "GET",
+            url:  queryurl,
+            dataType: "jsonp",  // return CSV FustionTable response as JSON
+            success: successFunction,
+            error: function (xhr,status,error) {
+                console.log(status);
+            //alert("AJAX ERROR for " + queryurl );
+            }
+        });
+    }
+    function example_dataHandler(d) {
+        // get the actual data out of the JSON object
+        var cols = d.table.cols;
+        var rows = d.table.rows;
+        var row_count = 0;
+        var results = '<table border="1" cellpadding="4">';
+        results += '<tr>';
+        for (var i = 0; i < cols.length; i++) {
+            results += '<th>' + cols[i] + '</th>';
+        }
+        results += '</tr>';
+        // loop through all rows to add them to the map
+        for (var i = 0; i < rows.length; i++) {
+
+            // Per the expected columns
+            results += '<tr>';
+            for(j=0; j < rows[i].length; j++)
+            {
+                results += '<td>' +  rows[i][j] + '</td>';
+            }
+            results += '</tr>';
+            row_count++;
+        }
+        results += '</table>';
+        results += '<br />';
+
+        results += 'Row Count: ' + row_count + '<br />';;
+        document.getElementById("program_select").innerHTML = results;
+    }
+
+    getFTData('1rVH53DHk3t13HbLlUfGlQLBWYy7X25WABYJfeVmJ', 'lat,lng,address', example_dataHandler);
 </script>
 
 </head>
 <body>
     <img id="mapImg" src="" />
     <div id="map_canvas"></div>
-
+    <div id="program_select"></div>
 </body>
 </html>

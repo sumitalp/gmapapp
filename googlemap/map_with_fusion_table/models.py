@@ -4,5 +4,5 @@ from django.db import models
 class Unit(models.Model):
     lat = models.FloatField()
     lng = models.FloatField()
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, blank=True)
     created = models.DateTimeField(auto_now_add=True)

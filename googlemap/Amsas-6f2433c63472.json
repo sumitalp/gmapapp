@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "amsas-staging",
+  "private_key_id": "6f2433c634728035617ce6743d4326010668c1b8",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCc4KeAISxdpdQO\nL19zTqy6+N6FIHRB2fyMOlz6juUmIvmg84TE1rCtfnw1XeaCC5ppMYfWgDz8cyQD\nvyLcKJzv0yZGYmZDx9JBSWsY6lyaCO1f3kfEHqAiKznq23H10q6MYGxsCb6mR+0E\nkaWWgMw5NoZsfNgE/NDI9chA1aD8zjxS4ou8GcFQFfzhlK8848fN7vJND02e9gqh\nFDnBK82bTcPB7BDrICJbqG/iTGqC+lDJs2ebXXEncDfdooE0OkA2E72NQUteV29s\nGLf37cpWJA4ry4YGuHdQ17vI0TeaHAkHMY8RaDIQ0pzlirw4vNN/defu5Jn2XZGg\nNv2r1zStAgMBAAECggEAUtNFfB+HlfXcbJTUV0OdbKXCjhThbHcToFGcD2lsUGM8\n2p5XZblX1HGoUGDAN766inltF3HjQQHlbNj4JbaHjRM07Qo8peKU/oUttxzdQTIf\naXMo/sGQmBmsXXP4yemu4Ex0UeIfNxlYaQYgn8JmkHpaJGMRhiiYbtFdJeXkNjQ0\n7C34eUXH8EDPnsz9jAzsrUPBDQarbJ/L2m0yjx/MRSpqSaVzkrPDW0eBI4LcveMP\nKKQvia5IfQ/svxcphBBU7age7vMMaIoVQKenLSFL3ldw9MARZnUJG3URG0h9uqKv\n2jXGlRcOMwU5P0Sa2xFwTGLiO+g1Qfsh4/MWBls9HQKBgQDOw266HloFgqxnIDBO\n2ihFbuphj5NzqR9fe7/ztxC12ftCbD+hJsk46Wh6pZtGFNPFDq/9oAxMNAgCaPvH\nk3rUQwJXOfETDCVtB69HJjiNsQUoi6VVlJXzhfieTWkuuZAnObvEsXCYB3Fb3a2T\np5JGWMzgiGvoPXTqLbrYL+TMVwKBgQDCPB1zJCw7ortJ+0ZC8juYq1L5Ruw9nDtr\nZ6weHTTaFn2AsMZcGapYh2z9hf9hhcppDEb/yGLZFxC+XgE2mLTg8bEDbWxatoRj\nIZpasulO93j5HLZbmwYZkvdZUdBzkmRAWbYX81QRURld8OCgpE/LGd3fa2zeuCid\nvzsqGP7kmwKBgQDBuWKZh66Y0yJtTT914fkxdQatejSRfbgjYnMrCi7h8+bzCTFk\n8E5AwJBfuaKOOx1f2K8UV0yuaWHHwE2HZKsFDfO3flZdnlfCnByh8TGzsFRA9PZo\nBNuqW6/hwm32lW53EiTX2djA2NhhVoY3fh4TQ0hSZ/+SjWJpt4cE33rj6QKBgQCu\n/cH6jkhbogziZkOy5NHUheXHN6J3D15pMYnbx6xqH4EKhDjxmR3jjH8hGawvjH4D\njlAY+cw0kZdAKykkqweq8ZTs5ZSNVYqIVSnfNPkFb+fJZ5jThyNDvyihjBglR2qS\nn0By64J953bXL8DweZh5/t/p/bqkHX5aQINpNgPOqQKBgQCd9ZRhR4ZqNOIMp+5o\ntJNbNuX7bqvnE0HZda1e1KsxGknmVBZfqZLtbnVOj4WT7EFENq2CDRpQym9zy2Rd\nA64F1C4kAKQtcBckKhSxfd2pJA8ZEu6CRHG9UAJ4h5I5neXwCoYjoaGLES7FJpjo\nEp12Xh5ZhJa+3ls89ePVHklzQA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "shepany@amsas-staging.iam.gserviceaccount.com",
+  "client_id": "112754878424187728198",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/shepany%40amsas-staging.iam.gserviceaccount.com"
+}

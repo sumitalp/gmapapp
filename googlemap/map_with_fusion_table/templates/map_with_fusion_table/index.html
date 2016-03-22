@@ -37,76 +37,56 @@
           var myOptions = {
           zoom: 10,
           center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+          mapTypeId: google.maps.MapTypeId.TERRAIN
         };
 
 
         map = new google.maps.Map(document.getElementById('map_canvas'),
             myOptions);
 
+        var elevator = new google.maps.ElevationService;
+
         map.set('styles', [
-            /*{
-                "featureType": "landscape.natural.landcover",
+            {
+                "featureType": "administrative",
                 "stylers": [
-                  { "color": "#ff0000" },
-                  { "visibility": "on" }
+                  //{ "color": "#ff0000" },
+                  { "visibility": "off" }
                 ]
-            },*/ {
+            }, {
               featureType: 'poi',
               elementType: 'geometry',
               stylers: [
-                { 'visibility': 'on' }
+                { 'visibility': 'off' }
               ]
             }
         ]);
-
         /*
-        map.set('styles', [
-          {
-          featureType: 'poi',
-          elementType: 'geometry',
-          stylers: [
-            { visibility: 'off' }
-          ]
-        }, {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [
-            { visibility: 'off' }
-          ]
-        }, {
-          featureType: 'poi.school',
-          elementType: 'geometry',
-          stylers: [
-            { visibility: 'on' },
-            { hue: '#fff700' },
-            { lightness: -15 },
-            { saturation: 99 }
-          ]
-        }
-        ]);*/
-
         // marker STARTS
         var marker = new google.maps.Marker({
             position: myLatlng,
             title:"Click to view info!"
         });
-        marker.setMap(map);
+        marker.setMap(map);*/
         // marker ENDS
 
         // info-window STARTS
-        var infowindow = new google.maps.InfoWindow({ content: "" });
+        var infowindow = new google.maps.InfoWindow({ content: "Atlantic Ocean", map: map });
+        infowindow.setPosition(myLatlng);
         google.maps.event.addListener(map, 'click', function(e) {
             myLatlng = new google.maps.LatLng(e.latLng.lat(),e.latLng.lng());
-            marker = new google.maps.Marker({
+            /*marker = new google.maps.Marker({
                 position: myLatlng,
                 title:"Click to view info!"
             });
-            marker.setMap(map);
+            marker.setMap(map);*/
             //infowindow.open(map,marker);
             console.log(google.maps);
 
-            $.ajax({
+            geocoder = new google.maps.Geocoder();
+            displayLocationElevation(myLatlng, elevator, infowindow, geocoder)
+
+            /*$.ajax({
                 type: "POST",
                 url:  "{% url 'maps:index' %}",
                 //dataType: "jsonp",  // return CSV FustionTable response as JSON
@@ -118,10 +98,10 @@
                     console.log(status);
                 //alert("AJAX ERROR for " + queryurl );
                 }
-            });
+            });*/
 
             // Get Address
-            geocoder = new google.maps.Geocoder();
+            /*geocoder = new google.maps.Geocoder();
             geocoder.geocode({'latLng': myLatlng}, function(results, status){
                 if (status === google.maps.GeocoderStatus.OK) {
                   if (results[1]) {
@@ -137,12 +117,55 @@
                 } else {
                   console.log('Geocoder failed due to: ' + status);
                 }
-            });
+            });*/
             console.log(e.latLng.lat(), e.latLng.lng());
         });
         // info-window ENDS
 
      }
+
+    function displayLocationElevation(location, elevator, infowindow, geocoder) {
+      // Initiate the location request
+      elevator.getElevationForLocations({
+        'locations': [location]
+      }, function(results, status) {
+
+        if (status === google.maps.ElevationStatus.OK) {
+            console.log(results);
+          // Retrieve the first result
+          if (results[0]) {
+            // Open the infowindow indicating the elevation at the clicked position.
+            //infowindow.setContent('The elevation at this point <br>is ' +
+            //    results[0].elevation + ' meters.');
+
+            var posElevation = results[0].elevation;
+            // Check Ocean and Mountain [Ocean elevation is always negation and lowest elevation of mountain is 300m]
+            if(0 < posElevation && posElevation < 300){
+                infowindow.setPosition(location);
+                console.log(posElevation);
+                geocoder.geocode({'latLng': location}, function(results, status){
+                    if (status === google.maps.GeocoderStatus.OK) {
+                      if (results[1]) {
+                        var address = results[1].formatted_address;
+                        console.log(results[1]);
+                        infowindow.setContent(address);
+                      } else {
+                        console.log('No results found');
+                      }
+                    } else {
+                      console.log('Geocoder failed due to: ' + status);
+                    }
+                });
+            }
+          } else {
+            infowindow.setContent('No results found');
+          }
+        } else {
+          infowindow.setContent('Elevation service failed due to: ' + status);
+        }
+      });
+    }
+
 
     function httpGet(theUrl)
     {
@@ -241,7 +264,7 @@
         document.getElementById("program_select").innerHTML = results;
     }
 
-    getFTData('1rVH53DHk3t13HbLlUfGlQLBWYy7X25WABYJfeVmJ', 'lat,lng,address', example_dataHandler);
+    //getFTData('1rVH53DHk3t13HbLlUfGlQLBWYy7X25WABYJfeVmJ', 'lat,lng,address', example_dataHandler);
 </script>
 
 </head>
